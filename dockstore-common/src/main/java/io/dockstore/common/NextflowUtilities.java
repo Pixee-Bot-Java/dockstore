@@ -16,6 +16,8 @@
 package io.dockstore.common;
 
 import com.google.common.base.Joiner;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
@@ -69,7 +71,7 @@ public final class NextflowUtilities {
         URL nextflowURL;
         String nextflowFilename;
         try {
-            nextflowURL = new URL(nextflowExec);
+            nextflowURL = Urls.create(nextflowExec, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
             nextflowFilename = new File(nextflowURL.toURI().getPath()).getName();
         } catch (MalformedURLException | URISyntaxException e) {
             throw new NextflowParsingException("Could not create Nextflow location", e);
