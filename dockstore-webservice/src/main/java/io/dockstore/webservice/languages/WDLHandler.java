@@ -666,7 +666,7 @@ public class WDLHandler implements LanguageHandlerInterface {
             String semanticVersionStringWithoutComments = semanticVersionLine.split(wdlCommentSymbol)[0];
             String[] semanticVersionStringArray = semanticVersionStringWithoutComments.split("\\s+");
             // If there is a version string line the first part should be 'version'
-            if (semanticVersionStringArray[0].equals("version") && semanticVersionStringArray.length == 2) {
+            if ("version".equals(semanticVersionStringArray[0]) && semanticVersionStringArray.length == 2) {
                 // Return the version such as '1.0' or 'draft-3'
                 // Note: if the programmer made a mistake this could be some
                 // bogus string but we will have semver check it later

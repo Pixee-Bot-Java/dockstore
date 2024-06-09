@@ -297,7 +297,7 @@ public final class ToolsImplCommon {
         } else if (specifier == DockerSpecifier.DIGEST) {
             // The image's sha256 checksum is the image's digest
             String imageDigest = image.getChecksums().stream()
-                    .filter(checksum -> checksum.getType().equals("sha256"))
+                    .filter(checksum -> "sha256".equals(checksum.getType()))
                     .findFirst()
                     .orElseThrow(() -> new CustomWebApplicationException("Could not find sha256 digest for Docker image specified by digest",
                             HttpStatus.SC_BAD_REQUEST))

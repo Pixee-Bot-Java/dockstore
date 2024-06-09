@@ -785,7 +785,7 @@ public class CWLHandler extends AbstractLanguageHandler implements LanguageHandl
                     absoluteImportPath = unsafeConvertRelativePathToAbsolutePath(parentFilePath, (String)mapValue);
                     handleAndProcessImport(repositoryId, absoluteImportPath, version, imports, (String)mapValue, sourceCodeRepoInterface);
                 }
-            } else if (e.getKey().equalsIgnoreCase("run")) {
+            } else if ("run".equalsIgnoreCase(e.getKey())) {
                 // for workflows, bare files may be referenced. See https://github.com/dockstore/dockstore/issues/208
                 //ex:
                 //  run: {import: revtool.cwl}

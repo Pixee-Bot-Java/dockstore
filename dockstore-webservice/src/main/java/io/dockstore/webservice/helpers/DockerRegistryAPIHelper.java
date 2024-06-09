@@ -105,7 +105,7 @@ public final class DockerRegistryAPIHelper {
         Reader manifestJson = manifestResponse.get().body().charStream();
         String digest;
 
-        if (contentType.equals(DOCKER_V2_IMAGE_MANIFEST_MEDIA_TYPE) || contentType.equals(OCI_IMAGE_MANIFEST_MEDIA_TYPE)) {
+        if (DOCKER_V2_IMAGE_MANIFEST_MEDIA_TYPE.equals(contentType) || OCI_IMAGE_MANIFEST_MEDIA_TYPE.equals(contentType)) {
             DockerImageManifest imageManifest = GSON.fromJson(manifestJson, DockerImageManifest.class);
 
             // Check that the image manifest is using schema version 2 because schema version 1 is deprecated and the JSON response is
