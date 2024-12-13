@@ -15,6 +15,8 @@
  */
 package io.dockstore.webservice.languages;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import static java.nio.file.attribute.PosixFilePermissions.asFileAttribute;
 import static java.nio.file.attribute.PosixFilePermissions.fromString;
 
@@ -373,7 +375,7 @@ public class WDLHandler implements LanguageHandlerInterface {
                         throw new CustomWebApplicationException(ERROR_PARSING_WORKFLOW_YOU_MAY_HAVE_A_RECURSIVE_IMPORT,
                                 HttpStatus.SC_UNPROCESSABLE_ENTITY);
                     } else {
-                        URL url = new URL(match);
+                        URL url = Urls.create(match, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
                         try (InputStream is = url.openStream();
                             BoundedInputStream boundedInputStream = new BoundedInputStream(is, FileUtils.ONE_MB)) {
                             String fileContents = IOUtils.toString(boundedInputStream, StandardCharsets.UTF_8);

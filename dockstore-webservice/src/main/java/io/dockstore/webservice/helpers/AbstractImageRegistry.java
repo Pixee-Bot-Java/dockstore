@@ -47,6 +47,8 @@ import io.dockstore.webservice.jdbi.ToolDAO;
 import io.dockstore.webservice.jdbi.UserDAO;
 import io.dockstore.webservice.languages.LanguageHandlerFactory;
 import io.dockstore.webservice.languages.LanguageHandlerInterface;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import jakarta.validation.constraints.NotNull;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -442,7 +444,7 @@ public abstract class AbstractImageRegistry {
         final String repoUrl = DOCKERHUB_URL + "repositories/" + repo + "/tags";
         Optional<String> response;
         try {
-            URL url = new URL(repoUrl);
+            URL url = Urls.create(repoUrl, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
             response = Optional.of(IOUtils.toString(url, StandardCharsets.UTF_8));
             if (response.isPresent()) {
                 return response;
@@ -655,7 +657,7 @@ public abstract class AbstractImageRegistry {
         Optional<String> projectResponse;
 
         try {
-            URL projectURL = new URL(projectPath);
+            URL projectURL = Urls.create(projectPath, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
             projectResponse = Optional.of(IOUtils.toString(projectURL, StandardCharsets.UTF_8));
 
             if (projectResponse.isPresent()) {
@@ -665,7 +667,7 @@ public abstract class AbstractImageRegistry {
                 List<GitLabContainerRegistry> registries = gson.fromJson(projectJSON, gitLabContainerRegistryListType);
 
                 final String tagsListPath = projectPath + '/' + registries.get(0).getId() + '/' + "tags";
-                URL tagsListURL = new URL(tagsListPath);
+                URL tagsListURL = Urls.create(tagsListPath, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
                 Optional<String> tagsListResponse = Optional.of(IOUtils.toString(tagsListURL, StandardCharsets.UTF_8));
 
                 if (tagsListResponse.isPresent()) {
@@ -676,7 +678,7 @@ public abstract class AbstractImageRegistry {
                     try {
                         for (GitLabTag gitLabTag : gitLabTags) {
                             final String detailedTagInfoUrlString = tagsListPath + '/' + gitLabTag.getName();
-                            URL detailedTagInfoURL = new URL(detailedTagInfoUrlString);
+                            URL detailedTagInfoURL = Urls.create(detailedTagInfoUrlString, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
                             Optional<String> detailedTagInfoResponse = Optional.of(IOUtils.toString(detailedTagInfoURL, StandardCharsets.UTF_8));
 
                             if (detailedTagInfoResponse.isPresent()) {

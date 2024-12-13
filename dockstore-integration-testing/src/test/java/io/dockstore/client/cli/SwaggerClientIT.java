@@ -19,6 +19,8 @@ package io.dockstore.client.cli;
 import static io.dockstore.common.DescriptorLanguage.CWL;
 import static io.dockstore.webservice.TokenResourceIT.GITHUB_ACCOUNT_USERNAME;
 import static io.dockstore.webservice.jdbi.EntryDAO.INVALID_SORTCOL_MESSAGE;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -267,11 +269,11 @@ class SwaggerClientIT extends BaseIT {
         // we need to explicitly test the path rather than use the swagger generated client classes to enforce the path
         ApiClient client = getAdminWebClient();
         final String basePath = client.getBasePath();
-        URL url = new URL(basePath + DockstoreWebserviceApplication.GA4GH_API_PATH_V2_BETA + "/tools");
+        URL url = Urls.create(basePath + DockstoreWebserviceApplication.GA4GH_API_PATH_V2_BETA + "/tools", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
         final List<String> strings = Resources.readLines(url, StandardCharsets.UTF_8);
         assertTrue(strings.size() == 1 && strings.get(0).contains("CommandLineTool"));
 
-        url = new URL(basePath + DockstoreWebserviceApplication.GA4GH_API_PATH_V2_BETA + "/metadata");
+        url = Urls.create(basePath + DockstoreWebserviceApplication.GA4GH_API_PATH_V2_BETA + "/metadata", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
         final List<String> metadataStrings = Resources.readLines(url, StandardCharsets.UTF_8);
         assertTrue(strings.size() == 1 && strings.get(0).contains("CommandLineTool"));
         assertTrue(metadataStrings.stream().anyMatch(s -> s.contains("friendly_name")));

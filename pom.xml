@@ -61,6 +61,7 @@
             ${project.basedir}/target/jacoco.xml,${project.basedir}/target/jacoco-it.xml,${project.basedir}/../reports/target/site/jacoco-aggregate/jacoco.xml
         </sonar.coverage.jacoco.xmlReportPaths>
         <!-- end sonarcloud properties -->
+        <versions.java-security-toolkit>1.2.1</versions.java-security-toolkit>
     </properties>
 
     <organization>
@@ -158,6 +159,13 @@
                  <version>${revision}${changelist}</version>
                  <scope>import</scope>
              </dependency>
+            <dependency>
+                <groupId>io.github.pixee</groupId>
+                <artifactId>java-security-toolkit</artifactId>
+                
+                
+                <version>${versions.java-security-toolkit}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

@@ -18,6 +18,8 @@ package io.dockstore.webservice.helpers;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import jakarta.ws.rs.core.UriBuilder;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -109,7 +111,7 @@ public final class LambdaUrlChecker implements CheckUrlInterface {
     private static boolean hasMalformedOrFileProtocolUrl(Set<String> possibleUrls) {
         return possibleUrls.stream().anyMatch(possibleUrl -> {
             try {
-                final URL url = new URL(possibleUrl);
+                final URL url = Urls.create(possibleUrl, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
                 if ("file".equals(url.getProtocol())) {
                     return false;
                 }

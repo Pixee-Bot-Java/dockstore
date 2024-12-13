@@ -1,6 +1,8 @@
 package io.dockstore.webservice.helpers;
 
 import static io.dockstore.webservice.resources.ResourceConstants.JWT_SECURITY_DEFINITION_NAME;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import static java.net.http.HttpRequest.BodyPublishers.ofString;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -83,7 +85,7 @@ public final class ORCIDHelper {
 
     public static void init(DockstoreWebserviceConfiguration configuration) {
         try {
-            URL orcidAuthUrl = new URL(configuration.getUiConfig().getOrcidAuthUrl());
+            URL orcidAuthUrl = Urls.create(configuration.getUiConfig().getOrcidAuthUrl(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
             // baseUrl should be something like "https://sandbox.orcid.org/" or "https://orcid.org/"
             baseUrl = orcidAuthUrl.getProtocol() + "://" + orcidAuthUrl.getHost() + "/";
             // baseApiUrl should result in something like "https://api.sandbox.orcid.org/v3.0/" or "https://api.orcid.org/v3.0/"

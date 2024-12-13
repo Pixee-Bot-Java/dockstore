@@ -41,6 +41,8 @@ import io.dockstore.webservice.helpers.DockerRegistryAPIHelper;
 import io.dockstore.webservice.helpers.QuayImageRegistry;
 import io.dockstore.webservice.helpers.SourceCodeRepoInterface;
 import io.dockstore.webservice.jdbi.ToolDAO;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import io.swagger.quay.client.ApiException;
 import io.swagger.quay.client.model.QuayTag;
 import java.io.IOException;
@@ -715,7 +717,7 @@ public interface LanguageHandlerInterface {
 
         do {
             try {
-                URL url = new URL(repoUrl);
+                URL url = Urls.create(repoUrl, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
                 response = Optional.of(IOUtils.toString(url, StandardCharsets.UTF_8));
             } catch (IOException ex) {
                 LOG.error("Unable to get DockerHub response for " + repo, ex);

@@ -59,6 +59,8 @@ import io.dockstore.webservice.jdbi.UserDAO;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.auth.CachingAuthenticator;
 import io.dropwizard.hibernate.UnitOfWork;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -188,7 +190,7 @@ public class TokenResource implements AuthenticatedResourceInterface, SourceCont
         this.client = client;
         this.cachingAuthenticator = cachingAuthenticator;
         try {
-            URL orcidAuthUrl = new URL(configuration.getUiConfig().getOrcidAuthUrl());
+            URL orcidAuthUrl = Urls.create(configuration.getUiConfig().getOrcidAuthUrl(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
             // orcidUrl should be something like "https://sandbox.orcid.org/" or "https://orcid.org/"
             orcidUrl = orcidAuthUrl.getProtocol() + "://" + orcidAuthUrl.getHost() + "/";
         } catch (MalformedURLException e) {
