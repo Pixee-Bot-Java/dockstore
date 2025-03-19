@@ -1,6 +1,8 @@
 package io.dockstore.webservice.helpers;
 
 import io.dockstore.webservice.CustomWebApplicationException;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.net.MalformedURLException;
 import java.net.URL;
 import org.apache.commons.lang3.StringUtils;
@@ -25,7 +27,7 @@ public final class URIHelper {
         URL url;
         try {
             int iport = StringUtils.isEmpty(aPort) ? -1 : Integer.parseInt(aPort);
-            url = new URL(aScheme, aHostName, iport, "");
+            url = Urls.create(aScheme, aHostName, iport, "", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
         } catch (MalformedURLException e) {
             LOG.error("Could not create base URL. Error is " + e.getMessage(), e);
             throw new CustomWebApplicationException("Could not create base URL."

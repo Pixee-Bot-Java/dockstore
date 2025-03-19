@@ -58,6 +58,8 @@ import io.dockstore.webservice.core.Workflow;
 import io.dockstore.webservice.core.WorkflowMode;
 import io.dockstore.webservice.core.WorkflowVersion;
 import io.dockstore.webservice.jdbi.TokenDAO;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -308,7 +310,7 @@ public class GitHubSourceCodeRepo extends SourceCodeRepoInterface {
                                 LOG.warn("Could not process {} at {}, is likely a submodule that is not on GitHub", originalFileName, originalReference);
                                 return null;
                             }
-                            URL otherRepoURL = new URL(otherRepo);
+                            URL otherRepoURL = Urls.create(otherRepo, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
                             // reassign repo and reference
                             final String[] split = otherRepoURL.getPath().split("/");
                             final int indexPastReposPrefix = 2;

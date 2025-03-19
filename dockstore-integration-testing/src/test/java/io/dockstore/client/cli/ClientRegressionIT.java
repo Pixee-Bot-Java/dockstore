@@ -19,6 +19,8 @@ package io.dockstore.client.cli;
 import static io.dockstore.common.CommonTestUtilities.OLD_DOCKSTORE_VERSION;
 import static io.dockstore.common.CommonTestUtilities.checkToolList;
 import static io.dockstore.common.CommonTestUtilities.runOldDockstoreClient;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -75,7 +77,7 @@ class ClientRegressionIT extends BaseIT {
     @BeforeAll
     public static void getOldDockstoreClient() throws IOException {
         TestUtility.createFakeDockstoreConfigFile();
-        URL url = new URL("https://github.com/dockstore/dockstore-cli/releases/download/" + OLD_DOCKSTORE_VERSION + "/dockstore");
+        URL url = Urls.create("https://github.com/dockstore/dockstore-cli/releases/download/" + OLD_DOCKSTORE_VERSION + "/dockstore", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
         dockstore = new File(temporaryFolder, "dockstore");
         FileUtils.copyURLToFile(url, dockstore);
         assertTrue(dockstore.setExecutable(true));

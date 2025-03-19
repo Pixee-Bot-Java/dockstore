@@ -58,6 +58,8 @@ import io.dockstore.webservice.permissions.PermissionsInterface;
 import io.dockstore.webservice.permissions.Role;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -753,7 +755,7 @@ public class EntryResource implements AuthenticatedResourceInterface, AliasableR
         boolean isReachable;
         HttpURLConnection connection = null;
         try {
-            URL url = new URL(discourseUrl);
+            URL url = Urls.create(discourseUrl, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
             connection = (HttpURLConnection)url.openConnection();
             connection.setRequestMethod("GET");
             connection.connect();
