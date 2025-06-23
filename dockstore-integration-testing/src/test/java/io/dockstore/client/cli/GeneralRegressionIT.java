@@ -27,6 +27,8 @@ import io.dockstore.common.Registry;
 import io.dockstore.common.RegressionTest;
 import io.dockstore.common.TestUtility;
 import io.dropwizard.testing.ResourceHelpers;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import io.swagger.client.ApiClient;
 import io.swagger.client.ApiException;
 import io.swagger.client.api.ContainersApi;
@@ -76,7 +78,7 @@ class GeneralRegressionIT extends BaseIT {
     @BeforeAll
     public static void getOldDockstoreClient() throws IOException {
         TestUtility.createFakeDockstoreConfigFile();
-        url = new URL("https://github.com/dockstore/dockstore-cli/releases/download/" + OLD_DOCKSTORE_VERSION + "/dockstore");
+        url = Urls.create("https://github.com/dockstore/dockstore-cli/releases/download/" + OLD_DOCKSTORE_VERSION + "/dockstore", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
         dockstore = new File(temporaryFolder, "dockstore");
         FileUtils.copyURLToFile(url, dockstore);
         Assertions.assertTrue(dockstore.setExecutable(true));
